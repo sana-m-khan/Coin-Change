@@ -1,0 +1,56 @@
+import java.util.ArrayList;
+
+public class coinChange {
+    public static int coinChange(ArrayList<Integer> coins, int amount) {
+        int min = Integer.MAX_VALUE;
+        int tempVal = amount;
+        int r = coins.size()-1;
+        boolean fail = false;
+
+        while (r >= 0) {
+            int tempMax = 0;
+            int ma = 1;
+            while (ma != 0) {
+                for (int x = r; x >= 0; x--) {
+                    tempMax += tempVal/coins.get(x);
+                    ma = tempVal % coins.get(x);
+                    tempVal = ma;
+                    if (ma == 0) {
+                        break;
+                    }
+                }
+                if (ma == 0 && tempMax < min) {
+                    min = tempMax;
+                    fail = false;
+                }
+                if (ma != 0) {
+                    fail = true;
+                    break;
+                }
+            }
+            tempVal = amount;
+            r--;
+        }
+        if (fail) {
+            return -1;
+        }
+        return min;
+    }
+//tests
+    public static void main(String[] args) {
+        ArrayList<Integer> coins1 = new ArrayList<>();
+        coins1.add(1);
+        coins1.add(6);
+        coins1.add(7);
+        coins1.add(11);
+        System.out.println(coinChange(coins1, 13)); // 
+
+        ArrayList<Integer> coins2 = new ArrayList<>();
+        coins2.add(2);
+        System.out.println(coinChange(coins2, 3)); // Output: -1
+
+        ArrayList<Integer> coins3 = new ArrayList<>();
+        coins3.add(1);
+        System.out.println(coinChange(coins3, 0)); // Output: 0
+    }
+}
